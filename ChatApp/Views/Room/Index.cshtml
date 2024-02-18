@@ -1,0 +1,76 @@
+﻿@model string
+@{
+	Layout = "_GroupChat";
+	ViewData["title"] = "Room " + Model;
+	bool roomExists = ChatApp.DBM.Pool.AddedHubs.Contains(Model);
+}
+@if (roomExists==false)
+{
+	<h1>room not existing</h1>
+	return;
+}
+<div class="d-block overflow-auto w-100 h-100">
+	<h1 class="w-100 text-center">@Model</h1>
+	<div class="container">
+		<div class="row p-1">
+			<div class="col-1">User</div>
+			<div class="col-5"><input type="number" id="userInput" /></div>
+		</div>
+		<div class="row p-1">
+			<div class="col-1">Message</div>
+			<div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
+		</div>
+		<div class="row p-1">
+			<div class="col-6 text-end">
+				<input type="button" id="sendButton" value="Send Message" />
+			</div>
+		</div>
+		<div class="row p-1">
+			<div class="col-6">
+				<hr />
+			</div>
+		</div>
+		<div class="row p-1">
+			<div class="col-6">
+				<ul id="messagesList"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+	var connection = new signalR.HubConnectionBuilder().withUrl("@Model").build();
+	const sendbtn = document.getElementById("sendButton");
+	sendbtn.disabled = true;
+
+	connection.on("ReceiveMessage", function (user, message) {
+		var li = document.createElement("li");
+		document.getElementById("messagesList").appendChild(li);
+		li.textContent = `${user} says ${message}`;
+	});
+
+	connection.start().then(function () {
+		document.getElementById("sendButton").disabled = false;
+		connection.invoke("JoinRoom", "@Model").catch(function (err) {
+			return console.error(err.toString());
+		});
+	}).catch(function (err) {
+		return console.error(err.toString());
+	});
+
+	sendbtn.addEventListener("click", function (event) {
+		var user = document.getElementById("userInput").value;
+		var message = document.getElementById("messageInput").value;
+		connection.invoke("SendMessage", "@Model", user, message).catch(function (err) {
+			return console.error(err.toString());
+		});
+		event.preventDefault();
+	});
+
+	window.addEventListener("unload", function (event) {
+		connection1.invoke("LeaveRoom", "@Model").catch(function (err) {
+			console.error(err.toString());
+		});
+	});
+</script>

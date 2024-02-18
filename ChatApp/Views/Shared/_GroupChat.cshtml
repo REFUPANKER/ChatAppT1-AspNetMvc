@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>ChatApp - @ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/ChatApp.styles.css" asp-append-version="true" />
+</head>
+<body class="GoupChat">
+	<div class="d-flex h-100 bg-secondary">
+		<div class="w-25 d-flex flex-column fs-4">
+			<a asp-controller="SignalRTests" asp-action="Index">Home</a>
+			@for (int i = 0; i < @ChatApp.DBM.Pool.AddedHubs.Count; i++)
+			{
+				string roomid = "/Room?name=" + ChatApp.DBM.Pool.AddedHubs[i];
+				<a href=@roomid>@ChatApp.DBM.Pool.AddedHubs[i]</a>
+			}
+			@*<a href="/Room?id=1">Room1</a>
+			<a href="/Room?id=2">Room2</a>*@
+			<form asp-controller="SignalRTests" asp-action="AddHub">
+				<label>Yeni oda ekle</label>
+				<input name="hubName" type="text" />
+				<button type="submit">Ekle</button>
+			</form>
+		</div>
+		<div class="w-75 bg-dark overflow-auto">
+			@RenderBody()
+		</div>
+	</div>
+</body>
+</html>
