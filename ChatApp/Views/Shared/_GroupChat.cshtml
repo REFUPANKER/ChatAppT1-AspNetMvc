@@ -12,16 +12,18 @@
 	<div class="d-flex h-100 bg-secondary">
 		<div class="w-25 d-flex flex-column fs-4">
 			<a asp-controller="SignalRTests" asp-action="Index">Home</a>
-			@for (int i = 0; i < @ChatApp.DBM.Pool.AddedHubs.Count; i++)
+			@for (int i = 0; i < ChatApp.DBM.Pool.dbm.JoinedGroups.Count; i++)
 			{
-				string roomid = "/Room?name=" + ChatApp.DBM.Pool.AddedHubs[i];
-				<a href=@roomid>@ChatApp.DBM.Pool.AddedHubs[i]</a>
+				string roomid = "/Room?token=" + ChatApp.DBM.Pool.dbm.JoinedGroups[i]?.token;
+				<a href=@roomid>@ChatApp.DBM.Pool.dbm.JoinedGroups[i]?.name</a>
 			}
-			@*<a href="/Room?id=1">Room1</a>
-			<a href="/Room?id=2">Room2</a>*@
-			<form asp-controller="SignalRTests" asp-action="AddHub">
+			<form asp-controller="SignalRTests" asp-action="AddHub" class="d-flex flex-column align-items-center">
 				<label>Yeni oda ekle</label>
 				<input name="hubName" type="text" />
+				<div>
+					<label>Oda herkese açık mı?</label>
+					<input name="global" type="checkbox" style="height:2vmax;width:2vmax;" />
+				</div>
 				<button type="submit">Ekle</button>
 			</form>
 		</div>

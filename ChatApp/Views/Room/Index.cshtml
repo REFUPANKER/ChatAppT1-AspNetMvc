@@ -1,16 +1,15 @@
-﻿@model string
+﻿@model ChatApp.DBM.Items.GroupItem;
 @{
 	Layout = "_GroupChat";
 	ViewData["title"] = "Room " + Model;
-	bool roomExists = ChatApp.DBM.Pool.AddedHubs.Contains(Model);
 }
-@if (roomExists==false)
+@if (Model == null)
 {
 	<h1>room not existing</h1>
 	return;
 }
 <div class="d-block overflow-auto w-100 h-100">
-	<h1 class="w-100 text-center">@Model</h1>
+	<h1 class="w-100 text-center">@Model.name</h1>
 	<div class="container">
 		<div class="row p-1">
 			<div class="col-1">User</div>
@@ -40,7 +39,8 @@
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script>
-	var connection = new signalR.HubConnectionBuilder().withUrl("@Model").build();
+	const roomName = `/Chat${@Model.id}`;
+	var connection = new signalR.HubConnectionBuilder().withUrl("Chat").build();
 	const sendbtn = document.getElementById("sendButton");
 	sendbtn.disabled = true;
 
@@ -52,7 +52,7 @@
 
 	connection.start().then(function () {
 		document.getElementById("sendButton").disabled = false;
-		connection.invoke("JoinRoom", "@Model").catch(function (err) {
+		connection.invoke("JoinRoom", roomName).catch(function (err) {
 			return console.error(err.toString());
 		});
 	}).catch(function (err) {
@@ -62,14 +62,14 @@
 	sendbtn.addEventListener("click", function (event) {
 		var user = document.getElementById("userInput").value;
 		var message = document.getElementById("messageInput").value;
-		connection.invoke("SendMessage", "@Model", user, message).catch(function (err) {
+		connection.invoke("SendMessage", roomName, user, message).catch(function (err) {
 			return console.error(err.toString());
 		});
 		event.preventDefault();
 	});
 
 	window.addEventListener("unload", function (event) {
-		connection1.invoke("LeaveRoom", "@Model").catch(function (err) {
+		connection1.invoke("LeaveRoom", roomName).catch(function (err) {
 			console.error(err.toString());
 		});
 	});

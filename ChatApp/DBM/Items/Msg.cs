@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ChatApp.DBM.Items
 {
@@ -13,5 +14,8 @@ namespace ChatApp.DBM.Items
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime msgDateTime { get; set; }
-	}
+
+        [AllowNull]
+        public string chat { get; set; }
+    }
 }

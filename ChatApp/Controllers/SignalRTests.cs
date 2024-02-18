@@ -1,5 +1,6 @@
 ﻿using ChatApp.DBM;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ChatApp.Controllers
 {
@@ -10,10 +11,9 @@ namespace ChatApp.Controllers
 			return View();
 		}
 
-		public IActionResult AddHub(string hubName)
+		public IActionResult AddHub(string hubName,int global)
 		{
-			//Pool.AddNewHub(hubName);
-			//TODO: fix adding new hub
+			Pool.dbm.AddGroup(hubName, global);
 			return RedirectToAction("Index");
 		}
 	}

@@ -6,60 +6,45 @@ namespace ChatApp.DBM
 {
 	public class Core : DbContext
 	{
-		public DbSet<Msg>? Messages { get; set; }
+		//public DbSet<Msg>? Messages { get; set; }
+		public DbSet<UserItem>? Users { get; set; }
+		public DbSet<GroupItem>? Groups { get; set; }
+		public DbSet<GroupUserLinkItem>? GroupsOfUser { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer("Data Source=LAPTOPLENO;Initial Catalog=ChatApp;Integrated Security=True;TrustServerCertificate=true;");
 		}
+		public Core()
+		{
+			GetGroupsOfUser();
+		}
 
-		//public List<Msg>? GetMessages(int lastid)
-		//{
-		//	try
-		//	{
-		//		List<Msg>? msgs;
-		//		msgs = Messages?.Select(x => x).OrderByDescending(x => x).Where(x => x.id > lastid).Take(5).OrderBy(x => x).ToList();
-		//		if (msgs != null && msgs.Count > 0)
-		//		{
-		//			foreach (var item in msgs)
-		//			{
-		//				if (item.id > lastid)
-		//				{
-		//					lastid = item.id;
-		//				}
-		//			}
-		//		}
-		//		return msgs;
-		//	}
-		//	catch { }
-		//	return null;
-		//}
+		public List<GroupItem?> JoinedGroups = new List<GroupItem?>();
+		public void GetGroupsOfUser()
+		{
+			if (GroupsOfUser != null)
+			{
+				JoinedGroups.Clear();
+				var res = (from g in Groups
+						   join gou in GroupsOfUser on g.id equals gou.groupId
+						   where gou.userId == Pool.uid
+						   select g).Distinct();
+				JoinedGroups = res.ToList();
+			}
+		}
 
-		//public List<Msg>? GetPreviousMessages(int max)
-		//{
-		//	try
-		//	{
-		//		List<Msg>? msgs = Messages?.Select(x => x).OrderByDescending(x => x).Where(x => x.id <= max).Take(5).ToList();
-		//		return msgs;
-		//	}
-		//	catch { }
-		//	return null;
-		//}
-
-		//public void SendMessage(string message)
-		//{
-		//	Messages?.Add(new Msg() { sender = Pool.uid, content = message });
-		//	SaveChanges();
-		//}
-
-		//public void RemoveMessage(int msgId)
-		//{
-		//	Msg? m = Messages?.Where(x => x.id == msgId).First();
-		//	if (m!=null && m.sender==Pool.uid)
-		//	{
-		//		Messages?.Remove(m);
-		//	}
-		//	SaveChanges();
-		//}
+		public void AddGroup(string name, int global)
+		{
+			if (Groups != null)
+			{
+				GroupItem groupItem = new GroupItem() { name = name, global = global };
+				Debug.WriteLine(name);
+				Debug.WriteLine(global);
+				JoinedGroups.Add(groupItem);
+				Groups.Add(groupItem);
+				SaveChanges();
+			}
+		}
 	}
 }

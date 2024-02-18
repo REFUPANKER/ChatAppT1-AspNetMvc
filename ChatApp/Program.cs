@@ -1,4 +1,3 @@
-using ChatApp.DBM;
 using ChatApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,15 +27,6 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=SignalRTests}/{action=Index}/{id?}");
 
-//adjust rooms by user's joined rooms
-Pool.OnHubAdded += Pool_OnHubAdded;
 
-Pool.AddNewHub("Room1");
-Pool.AddNewHub("Room2");
-
-void Pool_OnHubAdded(string hubName)
-{
-	app.MapHub<RoomHub>(hubName);
-}
-
+app.MapHub<RoomHub>("Chat");
 app.Run();
