@@ -36,13 +36,13 @@ namespace ChatApp.DBM
 
 		public void AddGroup(string name, int global)
 		{
-			if (Groups != null)
+			if (Groups != null && GroupsOfUser != null)
 			{
 				GroupItem groupItem = new GroupItem() { name = name, global = global };
-				Debug.WriteLine(name);
-				Debug.WriteLine(global);
 				JoinedGroups.Add(groupItem);
 				Groups.Add(groupItem);
+				SaveChanges();
+				GroupsOfUser.Add(new GroupUserLinkItem() { groupId = groupItem.id, userId = Pool.uid });
 				SaveChanges();
 			}
 		}
