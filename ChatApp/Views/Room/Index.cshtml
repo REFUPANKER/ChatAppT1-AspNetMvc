@@ -1,7 +1,7 @@
 ﻿@model ChatApp.DBM.Items.GroupItem;
 @{
 	Layout = "_GroupChat";
-	ViewData["title"] = "Room " + Model;
+	ViewData["title"] = "Room " + Model.name;
 }
 @if (Model == null)
 {

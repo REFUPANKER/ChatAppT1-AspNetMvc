@@ -1,10 +1,18 @@
 using ChatApp.Hubs;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(opt =>
+	{
+		opt.LoginPath = "/Auth/Index";
+		opt.LogoutPath = "/Auth/Index";
+	});
 
 var app = builder.Build();
 
@@ -21,11 +29,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=SignalRTests}/{action=Index}/{id?}");
+	pattern: "{controller=Auth}/{action=Index}/{id?}");
 
 
 app.MapHub<RoomHub>("Chat");

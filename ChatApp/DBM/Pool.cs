@@ -5,6 +5,5 @@
 		public static Random rnd = new Random();
 		//public static string CurrentUrl { get => "https://localhost:7154"; }
 		public static Core dbm = new Core();
-		public const int uid = 3; 
     }
 }

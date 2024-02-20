@@ -1,0 +1,18 @@
+﻿@model CreateAccountModel
+@{
+    Layout = "_Auth";
+}
+
+<form method="post" class="d-flex flex-column w-100 justify-content-center align-items-center h-100">
+	name *
+	<input name="name" asp-for="name"/>
+	<span asp-validation-for="name" class="alert-danger"></span>
+	email *
+	<input name="email" asp-for="email" />
+	<span asp-validation-for="email" class="alert-danger"></span>
+	password *
+	<input name="password" asp-for="password" />
+	<span asp-validation-for="password" class="alert-danger"></span>
+	<button type="submit">Create account</button>
+</form>
+

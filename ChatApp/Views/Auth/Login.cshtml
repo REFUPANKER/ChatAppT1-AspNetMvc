@@ -1,0 +1,13 @@
+﻿@model LoginModel
+@{
+	Layout = "_Auth";
+}
+<form method="post" asp-action="Login" class="d-flex flex-column w-100 justify-content-center align-items-center h-100">
+	email *
+	<input name="email" asp-for="email" />
+	<span asp-validation-for="email" class="alert-danger"></span>
+	password *
+	<input name="password" asp-for="password" />
+	<span asp-validation-for="password" class="alert-danger"></span>
+	<button type="submit">Login</button>
+</form>

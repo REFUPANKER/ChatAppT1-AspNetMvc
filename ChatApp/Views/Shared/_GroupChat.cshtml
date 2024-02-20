@@ -11,13 +11,21 @@
 <body class="GoupChat">
 	<div class="d-flex h-100 bg-secondary">
 		<div class="w-25 d-flex flex-column fs-4">
-			<a asp-controller="SignalRTests" asp-action="Index">Home</a>
-			@for (int i = 0; i < ChatApp.DBM.Pool.dbm.JoinedGroups.Count; i++)
-			{
-				string roomid = "/Room?token=" + ChatApp.DBM.Pool.dbm.JoinedGroups[i]?.token;
-				<a href=@roomid>@ChatApp.DBM.Pool.dbm.JoinedGroups[i]?.name</a>
+			<a asp-controller="Auth" asp-action="Logout">Çıkış yap</a>
+			<a asp-controller="Groups" asp-action="Index">Home</a>
+			@{
+				string? getuserid = User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
+				List<ChatApp.DBM.Items.GroupItem>? groups = ChatApp.DBM.Pool.dbm.GetGroupsOfUser(getuserid);
+				if (groups != null)
+				{
+					foreach (var item in groups)
+					{
+						string roomid = "/Room?token=" + item.token;
+						<a href=@roomid>@item.name</a>
+					}
+				}
 			}
-			<form asp-controller="SignalRTests" asp-action="AddHub" class="d-flex flex-column align-items-center">
+			<form asp-controller="Groups" asp-action="AddHub" class="d-flex flex-column align-items-center">
 				<label>Yeni oda ekle</label>
 				<input name="hubName" type="text" />
 				<div>

@@ -1,6 +1,7 @@
 ﻿using ChatApp.DBM.Items;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ChatApp.DBM
 {
@@ -15,34 +16,33 @@ namespace ChatApp.DBM
 		{
 			optionsBuilder.UseSqlServer("Data Source=LAPTOPLENO;Initial Catalog=ChatApp;Integrated Security=True;TrustServerCertificate=true;");
 		}
-		public Core()
-		{
-			GetGroupsOfUser();
-		}
 
-		public List<GroupItem?> JoinedGroups = new List<GroupItem?>();
-		public void GetGroupsOfUser()
+		public List<GroupItem>? GetGroupsOfUser(string? userid)
 		{
 			if (GroupsOfUser != null)
 			{
-				JoinedGroups.Clear();
 				var res = (from g in Groups
 						   join gou in GroupsOfUser on g.id equals gou.groupId
-						   where gou.userId == Pool.uid
+						   where gou.userId == Convert.ToInt32(userid)
 						   select g).Distinct();
-				JoinedGroups = res.ToList();
+				return res.ToList();
 			}
+			return null;
+		}
+		public List<GroupItem>? GetGroupsOfUser(Controller controller)
+		{
+			string? userId = controller.User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
+			return GetGroupsOfUser(userId);
 		}
 
-		public void AddGroup(string name, int global)
+		public void AddGroup(int userid, string name, int global)
 		{
 			if (Groups != null && GroupsOfUser != null)
 			{
 				GroupItem groupItem = new GroupItem() { name = name, global = global };
-				JoinedGroups.Add(groupItem);
 				Groups.Add(groupItem);
 				SaveChanges();
-				GroupsOfUser.Add(new GroupUserLinkItem() { groupId = groupItem.id, userId = Pool.uid });
+				GroupsOfUser.Add(new GroupUserLinkItem() { groupId = groupItem.id, userId = userid });
 				SaveChanges();
 			}
 		}
