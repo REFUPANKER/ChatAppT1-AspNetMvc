@@ -10,6 +10,8 @@ namespace ChatApp.DBM.Items
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public string? token { get; set; }
+		
+		public int owner { get; set; }
 
 		public string? name { get; set; }
 

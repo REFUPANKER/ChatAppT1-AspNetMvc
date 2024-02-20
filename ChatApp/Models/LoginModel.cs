@@ -9,5 +9,8 @@ namespace ChatApp.Models
 
 		[Required(ErrorMessage = "password must be valid")]
 		public string? password { get; set; }
-    }
+
+		[Required(ErrorMessage = "failed to login,check the fields")]
+		public bool? success { get; set; }
+	}
 }

@@ -13,5 +13,8 @@ namespace ChatApp.Models
 
 		[Required(ErrorMessage = "Password must be valid")]
 		public string? password { get; set; }
+
+		[Required(ErrorMessage = "user might be already existing,check fields")]
+		public bool? success { get; set; }
 	}
 }

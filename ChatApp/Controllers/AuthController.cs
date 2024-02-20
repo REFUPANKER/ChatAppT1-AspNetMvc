@@ -23,21 +23,21 @@ namespace ChatApp.Controllers
 		[HttpPost]
 		public IActionResult Login(LoginModel lm)
 		{
+			if (lm.password == null || lm.email == null)
+			{
+				ModelState.AddModelError("email", "required");
+				ModelState.AddModelError("password", "required");
+				return View();
+			}
 			UserItem? user = Pool.dbm.Users?.Select(x => x).Where(x => x.email == lm.email && x.password == lm.password).FirstOrDefault();
 			if (user != null)
 			{
 				InitCookie(user);
 				return RedirectToAction("Index", "Groups");
 			}
-			if (lm.password==null)
+			else
 			{
-				ModelState.AddModelError("password", "password required");
-				return View();
-			}
-			if (lm.email == null)
-			{
-				ModelState.AddModelError("email", "email required");
-				return View();
+				ModelState.AddModelError("success", "required");
 			}
 			return View();
 		}
@@ -50,19 +50,11 @@ namespace ChatApp.Controllers
 		[HttpPost]
 		public IActionResult CreateAccount(CreateAccountModel cam)
 		{
-			if (cam.email == null)
+			if (cam.email == null || cam.name == null || cam.password == null)
 			{
-				ModelState.AddModelError("email", "email required");
-				return View();
-			}
-			if (cam.name == null)
-			{
-				ModelState.AddModelError("email", "email required");
-				return View();
-			}
-			if (cam.password == null)
-			{
-				ModelState.AddModelError("email", "email required");
+				ModelState.AddModelError("email", "required");
+				ModelState.AddModelError("password", "required");
+				ModelState.AddModelError("name", "required");
 				return View();
 			}
 			string? user = Pool.dbm.Users?.Select(x => x.email).Where(x => x == cam.email).FirstOrDefault();
@@ -74,7 +66,11 @@ namespace ChatApp.Controllers
 				InitCookie(newuser);
 				return RedirectToAction(actionName: "Index", controllerName: "Groups");
 			}
-			return View(model: new UserItem());
+			else
+			{
+				ModelState.AddModelError("success", "required");
+			}
+			return View();
 		}
 
 		private void InitCookie(UserItem user)

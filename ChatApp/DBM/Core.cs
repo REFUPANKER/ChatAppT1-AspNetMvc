@@ -39,7 +39,7 @@ namespace ChatApp.DBM
 		{
 			if (Groups != null && GroupsOfUser != null)
 			{
-				GroupItem groupItem = new GroupItem() { name = name, global = global };
+				GroupItem groupItem = new GroupItem() { owner = userid, name = name, global = global };
 				Groups.Add(groupItem);
 				SaveChanges();
 				GroupsOfUser.Add(new GroupUserLinkItem() { groupId = groupItem.id, userId = userid });

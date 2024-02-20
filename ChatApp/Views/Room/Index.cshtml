@@ -2,6 +2,7 @@
 @{
 	Layout = "_GroupChat";
 	ViewData["title"] = "Room " + Model.name;
+	string? userid = User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
 }
 @if (Model == null)
 {
@@ -9,12 +10,8 @@
 	return;
 }
 <div class="d-block overflow-auto w-100 h-100">
-	<h1 class="w-100 text-center">@Model.name</h1>
+	<h1 class="w-100 text-center">@Model.name | by @Model.owner</h1>
 	<div class="container">
-		<div class="row p-1">
-			<div class="col-1">User</div>
-			<div class="col-5"><input type="number" id="userInput" /></div>
-		</div>
 		<div class="row p-1">
 			<div class="col-1">Message</div>
 			<div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
@@ -60,7 +57,7 @@
 	});
 
 	sendbtn.addEventListener("click", function (event) {
-		var user = document.getElementById("userInput").value;
+		var user= "@userid";
 		var message = document.getElementById("messageInput").value;
 		connection.invoke("SendMessage", roomName, user, message).catch(function (err) {
 			return console.error(err.toString());
