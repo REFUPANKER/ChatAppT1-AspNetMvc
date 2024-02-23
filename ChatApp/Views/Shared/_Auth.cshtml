@@ -7,6 +7,21 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body class="d-block overflow-auto" style="height:100vh;">
-	@RenderBody()
+	@if (User.Claims.FirstOrDefault()?.Value == null)
+	{
+		@RenderBody()
+	}
+	else
+	{
+		IgnoreBody();
+
+
+		<div class="d-flex w-100 h-100 justify-content-center align-items-center flex-column fs-2">
+			<h1>You already authed</h1>
+			<a asp-controller="Auth" asp-action="Logout">Çıkış yap</a>
+			<a asp-controller="Groups" asp-action="Index">Sohbete geri dön</a>
+		</div>
+	}
+
 </body>
 </html>

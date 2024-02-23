@@ -29,6 +29,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -37,6 +38,6 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Auth}/{action=Index}/{id?}");
 
-
 app.MapHub<RoomHub>("Chat");
+
 app.Run();

@@ -1,0 +1,14 @@
+﻿@{
+	Layout = "_Layout";
+}
+<div class="w-100 h-100 bg-dark">
+	<h1>Wellcome to the search section</h1>
+	<form method="post" asp-action="Profile">
+		<label>Search profile</label>
+		<input name="user" required />
+	</form>
+	<form method="post" asp-action="Groups">
+		<label>Search group</label>
+		<input name="group" required />
+	</form>
+</div>

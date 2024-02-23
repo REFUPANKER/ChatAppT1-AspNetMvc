@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XW12pDCVUurvN2p6j1/6k5DporU7t3OFaMThWg0JJ7A=",
+  "Hash": "XhSrUQPFxuFWozFADGqXaK/CeeVcm1FnEajNHzJTPfA=",
   "Source": "ChatApp",
   "BasePath": "_content/ChatApp",
   "Mode": "Default",
@@ -49,6 +49,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ChatApp.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\animate.css",
+      "SourceId": "ChatApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\",
+      "BasePath": "_content/ChatApp",
+      "RelativePath": "css/animate.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\animate.css"
+    },
+    {
+      "Identity": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\animate.min.css",
+      "SourceId": "ChatApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\",
+      "BasePath": "_content/ChatApp",
+      "RelativePath": "css/animate.min.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\animate.min.css"
     },
     {
       "Identity": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\site.css",

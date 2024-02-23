@@ -1,7 +1,9 @@
 ﻿using ChatApp.DBM.Items;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 namespace ChatApp.DBM
 {
@@ -16,6 +18,7 @@ namespace ChatApp.DBM
 		{
 			optionsBuilder.UseSqlServer("Data Source=LAPTOPLENO;Initial Catalog=ChatApp;Integrated Security=True;TrustServerCertificate=true;");
 		}
+
 
 		public List<GroupItem>? GetGroupsOfUser(string? userid)
 		{
@@ -44,6 +47,36 @@ namespace ChatApp.DBM
 				SaveChanges();
 				GroupsOfUser.Add(new GroupUserLinkItem() { groupId = groupItem.id, userId = userid });
 				SaveChanges();
+			}
+		}
+
+		public void JoinGroup(int userid, string groupToken)
+		{
+			if (Groups != null && GroupsOfUser != null)
+			{
+				GroupItem? group = Groups?.Where(x => x.token == groupToken).FirstOrDefault();
+				if (group != null)
+				{
+					GroupsOfUser.Add(new GroupUserLinkItem() { groupId = group.id, userId = userid });
+					SaveChanges();
+				}
+			}
+		}
+
+		public void LeaveGroup(int userid, string groupToken)
+		{
+			if (Groups != null && GroupsOfUser != null)
+			{
+				GroupItem? group = Groups?.Where(x => x.token == groupToken).FirstOrDefault();
+				if (group != null)
+				{
+					GroupUserLinkItem? guli = GroupsOfUser.Where(x => x.userId == userid && x.groupId == group.id).FirstOrDefault();
+					if (guli != null)
+					{
+						GroupsOfUser.Remove(guli);
+					}
+					SaveChanges();
+				}
 			}
 		}
 	}

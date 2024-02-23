@@ -3,7 +3,9 @@ using ChatApp.DBM.Items;
 using ChatApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace ChatApp.Controllers
@@ -78,9 +80,6 @@ namespace ChatApp.Controllers
 			HttpContext.SignOutAsync();
 			var claims = new List<Claim>() {
 			new Claim("UserId",user.id.ToString()),
-			new Claim("UserName",user.name),
-			new Claim("UserEmail",user.email),
-			new Claim("UserToken",user.token),
 			};
 			var claimsIdentify = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 			HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -93,6 +92,13 @@ namespace ChatApp.Controllers
 		{
 			HttpContext.SignOutAsync();
 			return RedirectToAction("Index");
+		}
+
+
+		public JsonResult? GetUserById(int id)
+		{
+			UserItem? uit = Pool.dbm.Users?.Select(x => new UserItem() { id = x.id, name = x.name, token = x.token }).Where(x => x.id == id)?.FirstOrDefault();
+			return Json(new { uit?.id, uit?.name, uit?.token });
 		}
 	}
 }

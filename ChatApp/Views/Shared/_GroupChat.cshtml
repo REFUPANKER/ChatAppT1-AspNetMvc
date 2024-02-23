@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/ChatApp.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/animate.css" />
+	<link rel="stylesheet" href="~/css/animate.min.css" />
 </head>
 <body class="GoupChat">
 	<div class="d-flex h-100 bg-secondary">
@@ -24,15 +26,22 @@
 						<a href=@roomid>@item.name</a>
 					}
 				}
+				groups?.Clear();
 			}
 			<form asp-controller="Groups" asp-action="AddHub" class="d-flex flex-column align-items-center">
-				<label>Yeni oda ekle</label>
+				<label>Yeni grup ekle</label>
 				<input name="hubName" type="text" />
 				<div>
-					<label>Oda herkese açık mı?</label>
+					<label>Grup herkese açık mı?</label>
 					<input name="global" type="checkbox" checked="checked" style="height:2vmax;width:2vmax;" />
 				</div>
 				<button type="submit">Ekle</button>
+			</form>
+			<form asp-controller="Groups" asp-action="JoinGroup" class="d-flex flex-column align-items-center">
+				<label>Gruba katıl</label>
+				<input name="groupToken" type="text" placeholder="Group Token"/>
+				<button type="submit">Katıl</button>
+				<a class="btn btn-success p-2 m-2 fs-3" href="/Show/Groups">Grupları Keşfet</a>
 			</form>
 		</div>
 		<div class="w-75 bg-dark overflow-auto">

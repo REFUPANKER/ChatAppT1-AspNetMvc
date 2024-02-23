@@ -1,37 +1,28 @@
 ﻿@model ChatApp.DBM.Items.GroupItem;
 @{
 	Layout = "_GroupChat";
-	ViewData["title"] = "Room " + Model.name;
-	string? userid = User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
+	ViewData["title"] = Model.name;
+	string? userid() { return User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value; }
+	ChatApp.DBM.Items.UserItem? owner = ChatApp.DBM.Pool.dbm.Users?.Where(x => x.id == Model.owner).Select(x => new ChatApp.DBM.Items.UserItem { id = x.id, name = x.name, token = x.token }).FirstOrDefault();
 }
 @if (Model == null)
 {
 	<h1>room not existing</h1>
 	return;
 }
-<div class="d-block overflow-auto w-100 h-100">
-	<h1 class="w-100 text-center">@Model.name | by @Model.owner</h1>
-	<div class="container">
-		<div class="row p-1">
-			<div class="col-1">Message</div>
-			<div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
-		</div>
-		<div class="row p-1">
-			<div class="col-6 text-end">
-				<input type="button" id="sendButton" value="Send Message" />
-			</div>
-		</div>
-		<div class="row p-1">
-			<div class="col-6">
-				<hr />
-			</div>
-		</div>
-		<div class="row p-1">
-			<div class="col-6">
-				<ul id="messagesList"></ul>
-			</div>
-		</div>
+<div id="groupsHolder" class="d-flex flex-column align-items-center overflow-auto w-100 h-100">
+	<h1 class="w-100 text-center">@Model.name | by @owner?.name</h1>
+	@if (userid() == owner?.id + "")
+	{
+		<div class="w-100 text-center">Invite Token : <h3>@Model.token</h3></div>
+	}
+	<div class="d-flex flex-row align-items-center w-75">
+		<input type="text" class="w-100" id="messageInput" placeholder="Type message" required="" />
+		<button id="sendButton">Send</button>
 	</div>
+	<div id="messagesList" class="w-75 h-100 m-5 mt-2 d-flex flex-column overflow-auto" style="max-height:80vh;">
+	</div>
+	<a class="btn btn-danger p-2 fs-4" href="/Groups/LeaveGroup?groupToken=@Model.token">Gruptan ayrıl</a>
 </div>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
@@ -39,12 +30,24 @@
 	const roomName = `/Chat${@Model.id}`;
 	var connection = new signalR.HubConnectionBuilder().withUrl("Chat").build();
 	const sendbtn = document.getElementById("sendButton");
+	const message = document.getElementById("messageInput");
+	const groupHolder = document.getElementById("groupsHolder");
 	sendbtn.disabled = true;
 
 	connection.on("ReceiveMessage", function (user, message) {
-		var li = document.createElement("li");
+		if (message.length < 1 || message.replaceAll(" ", "").length < 1) {
+			alert("type message");
+			return;
+		}
+		var li = document.createElement("div");
 		document.getElementById("messagesList").appendChild(li);
-		li.textContent = `${user} says ${message}`;
+		fetch(`/Auth/GetUserById?id=${user}`).then((v) => v.json()).then((v) => {
+			if (user == @owner?.id) {
+				li.innerHTML = `<b class='fs-3'><u style='color:#fae419'>[Owner]</u> @owner?.name</b>  |  <button onclick='viewProfile("${v.token}")'>Profile</button></br><div class='fs-4'>${message}</div>`;
+			} else {
+				li.innerHTML = `<b class='fs-3' >${v.name}</b>  |  <button onclick='viewProfile("${v.token}")'>Profile</button></br><div class='fs-4'>${message}</div>`;
+			}
+		});
 	});
 
 	connection.start().then(function () {
@@ -56,12 +59,33 @@
 		return console.error(err.toString());
 	});
 
-	sendbtn.addEventListener("click", function (event) {
-		var user= "@userid";
-		var message = document.getElementById("messageInput").value;
-		connection.invoke("SendMessage", roomName, user, message).catch(function (err) {
-			return console.error(err.toString());
+	function viewProfile(token) {
+		fetch(`/Show/Profile?token=${token}`).then((v) => v.text()).then((v) => {
+			document.body.insertAdjacentHTML("afterbegin", v);
 		});
+	}
+
+	function closeProfileClick() {
+		let x = document.getElementById("profileItem");
+		x.parentElement.removeChild(x);
+	}
+
+	function sendMsg() {
+		var user = "@userid()";
+		connection.invoke("SendMessage", roomName, user, message.value)
+			.catch(function (err) {
+				return console.error(err.toString());
+			});
+		message.value = "";
+	}
+
+	message.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			sendMsg();
+		}
+	})
+	sendbtn.addEventListener("click", function (event) {
+		sendMsg();
 		event.preventDefault();
 	});
 

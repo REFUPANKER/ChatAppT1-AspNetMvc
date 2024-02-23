@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\ChatApp.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\animate.css",
+      "PackagePath": "staticwebassets\\css\\animate.css"
+    },
+    {
+      "Id": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\animate.min.css",
+      "PackagePath": "staticwebassets\\css\\animate.min.css"
+    },
+    {
       "Id": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
