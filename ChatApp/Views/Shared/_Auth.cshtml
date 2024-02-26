@@ -6,7 +6,7 @@
 	<title>ChatApp - @ViewData["Title"]</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
-<body class="d-block overflow-auto" style="height:100vh;">
+<body class="d-block overflow-auto bg-dark text-white fs-2" style="height:100vh;">
 	@if (User.Claims.FirstOrDefault()?.Value == null)
 	{
 		@RenderBody()
@@ -16,7 +16,7 @@
 		IgnoreBody();
 
 
-		<div class="d-flex w-100 h-100 justify-content-center align-items-center flex-column fs-2">
+		<div class="d-flex w-100 h-100 justify-content-center align-items-center flex-column">
 			<h1>You already authed</h1>
 			<a asp-controller="Auth" asp-action="Logout">Çıkış yap</a>
 			<a asp-controller="Groups" asp-action="Index">Sohbete geri dön</a>

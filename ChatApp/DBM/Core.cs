@@ -79,5 +79,19 @@ namespace ChatApp.DBM
 				}
 			}
 		}
+
+		public void RemoveGroup(int userid, string groupToken)
+		{
+			if (Groups != null)
+			{
+				GroupItem? group = Groups?.Where(x => x.token == groupToken).FirstOrDefault();
+				if (group != null && group.owner == userid)
+				{
+					Groups?.Remove(group);
+					SaveChanges();
+				}
+			}
+		}
+
 	}
 }

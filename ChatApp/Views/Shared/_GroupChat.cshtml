@@ -13,8 +13,8 @@
 <body class="GoupChat">
 	<div class="d-flex h-100 bg-secondary">
 		<div class="w-25 d-flex flex-column fs-4">
-			<a asp-controller="Auth" asp-action="Logout">Çıkış yap</a>
-			<a asp-controller="Groups" asp-action="Index">Home</a>
+			<a asp-controller="Auth" asp-action="Logout" class="w-100 text-center text-decoration-none">Çıkış yap</a>
+			<a asp-controller="Groups" asp-action="Index" class="w-100 ps-5 text-decoration-none">Home</a>
 			@{
 				string? getuserid = User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
 				List<ChatApp.DBM.Items.GroupItem>? groups = ChatApp.DBM.Pool.dbm.GetGroupsOfUser(getuserid);

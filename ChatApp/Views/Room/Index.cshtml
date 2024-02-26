@@ -12,9 +12,10 @@
 }
 <div id="groupsHolder" class="d-flex flex-column align-items-center overflow-auto w-100 h-100">
 	<h1 class="w-100 text-center">@Model.name | by @owner?.name</h1>
-	@if (userid() == owner?.id + "")
+	<h3>@(Model.global == 1 ? "Herkese açık" : "Özel") Grup</h3>
+	@if (Model.global == 1 || userid() == owner?.id + "")
 	{
-		<div class="w-100 text-center">Invite Token : <h3>@Model.token</h3></div>
+		<div class="w-100 text-center d-flex flex-row justify-content-center align-items-center" style="cursor:pointer;" onclick="copyToken()">Invite Token : @Model.token</div>
 	}
 	<div class="d-flex flex-row align-items-center w-75">
 		<input type="text" class="w-100" id="messageInput" placeholder="Type message" required="" />
@@ -22,7 +23,13 @@
 	</div>
 	<div id="messagesList" class="w-75 h-100 m-5 mt-2 d-flex flex-column overflow-auto" style="max-height:80vh;">
 	</div>
-	<a class="btn btn-danger p-2 fs-4" href="/Groups/LeaveGroup?groupToken=@Model.token">Gruptan ayrıl</a>
+	<div class="d-flex flex-row justify-content-center gap-2 mb-2">
+		<a class="btn btn-outline-danger p-2 fs-4" href="/Groups/LeaveGroup?groupToken=@Model.token">Gruptan ayrıl</a>
+		@if (Model.global == 1 || userid() == owner?.id + "")
+		{
+			<a class="btn btn-outline-danger p-2 fs-4" href="/Groups/RemoveGroup?groupToken=@Model.token">Grubu sil</a>
+		}
+	</div>
 </div>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
@@ -94,4 +101,10 @@
 			console.error(err.toString());
 		});
 	});
+
+	function copyToken() {
+		navigator.clipboard.writeText("@Model.token").then((v) => {
+			alert(`Invite token copied \n${"@Model.token"}`);
+		})
+	}
 </script>
