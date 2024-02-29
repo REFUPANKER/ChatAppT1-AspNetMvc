@@ -14,20 +14,10 @@
 	<div class="d-flex h-100 bg-secondary">
 		<div class="w-25 d-flex flex-column fs-4">
 			<a asp-controller="Auth" asp-action="Logout" class="w-100 text-center text-decoration-none">Çıkış yap</a>
-			<a asp-controller="Groups" asp-action="Index" class="w-100 ps-5 text-decoration-none">Home</a>
-			@{
-				string? getuserid = User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
-				List<ChatApp.DBM.Items.GroupItem>? groups = ChatApp.DBM.Pool.dbm.GetGroupsOfUser(getuserid);
-				if (groups != null)
-				{
-					foreach (var item in groups)
-					{
-						string roomid = "/Room?token=" + item.token;
-						<a href=@roomid>@item.name</a>
-					}
-				}
-				groups?.Clear();
-			}
+			<a asp-controller="Groups" asp-action="Index" class="w-100 ps-2 text-decoration-none">Home</a>
+			<div id="RoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(15,15,15);max-height:25vh;">
+				<h6 class="text-center w-100 m-0">Dahil olduğun gruplar</h6>
+			</div>
 			<form asp-controller="Groups" asp-action="AddHub" class="d-flex flex-column align-items-center">
 				<label>Yeni grup ekle</label>
 				<input name="hubName" type="text" />
@@ -39,7 +29,7 @@
 			</form>
 			<form asp-controller="Groups" asp-action="JoinGroup" class="d-flex flex-column align-items-center">
 				<label>Gruba katıl</label>
-				<input name="groupToken" type="text" placeholder="Group Token"/>
+				<input name="groupToken" type="text" placeholder="Group Token" />
 				<button type="submit">Katıl</button>
 				<a class="btn btn-success p-2 m-2 fs-3" href="/Show/Groups">Grupları Keşfet</a>
 			</form>
@@ -50,3 +40,14 @@
 	</div>
 </body>
 </html>
+<script>
+	function LoadRoomsList() {
+		var roomslist = document.getElementById("RoomsList");
+		fetch("/Api/GetUserGroups").then(v => v.json()).then((v) => {
+			v.forEach(i=>{
+				roomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}'>${i.name}</a>`);
+			});
+		});
+	}
+	LoadRoomsList();
+</script>

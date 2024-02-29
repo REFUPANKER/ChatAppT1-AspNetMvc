@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ChatApp.DBM;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace ChatApp.Controllers
@@ -14,6 +15,7 @@ namespace ChatApp.Controllers
 		{
 			return View();
 		}
+
 
 		public IActionResult Profile(string token)
 		{

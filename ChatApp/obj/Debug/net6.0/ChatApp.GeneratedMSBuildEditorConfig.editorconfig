@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Computer\Documents\Education\GraduationProject\ChatApp\ChatApp
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Computer/Documents/Education/GraduationProject/ChatApp/ChatApp/Views/Api/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBpXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Computer/Documents/Education/GraduationProject/ChatApp/ChatApp/Views/Auth/CreateAccount.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxDcmVhdGVBY2NvdW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

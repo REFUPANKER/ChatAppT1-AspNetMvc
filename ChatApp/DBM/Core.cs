@@ -32,9 +32,16 @@ namespace ChatApp.DBM
 			}
 			return null;
 		}
+
 		public List<GroupItem>? GetGroupsOfUser(Controller controller)
 		{
 			string? userId = controller.User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
+			return GetGroupsOfUser(userId);
+		}
+
+		public List<GroupItem>? GetGroupsOfUser(HttpContext context)
+		{
+			string? userId = context.User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value;
 			return GetGroupsOfUser(userId);
 		}
 

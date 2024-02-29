@@ -14,6 +14,8 @@ namespace ChatApp.Controllers
 		}
 
 		public int UserId { get => Convert.ToInt32(User.Claims?.Where(x => x.Type.ToString() == "UserId").FirstOrDefault()?.Value); }
+		
+		
 		public IActionResult AddHub(string hubName, string global)
 		{
 			Pool.dbm.AddGroup(UserId, hubName, global == "on" ? 1 : 0);
