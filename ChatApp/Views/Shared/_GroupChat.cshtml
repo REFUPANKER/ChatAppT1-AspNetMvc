@@ -18,6 +18,9 @@
 			<div id="RoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(15,15,15);max-height:25vh;">
 				<h6 class="text-center w-100 m-0">Dahil olduğun gruplar</h6>
 			</div>
+			<div id="ClosedRoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(60,15,15);max-height:25vh;">
+				<h6 class="text-center w-100 m-0">Dahil olduğun kapalı gruplar</h6>
+			</div>
 			<form asp-controller="Groups" asp-action="AddHub" class="d-flex flex-column align-items-center">
 				<label>Yeni grup ekle</label>
 				<input name="hubName" type="text" />
@@ -43,9 +46,15 @@
 <script>
 	function LoadRoomsList() {
 		var roomslist = document.getElementById("RoomsList");
+		var closedroomslist = document.getElementById("ClosedRoomsList");
 		fetch("/Api/GetUserGroups").then(v => v.json()).then((v) => {
 			v.forEach(i=>{
 				roomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}'>${i.name}</a>`);
+			});
+		});
+		fetch("/Api/GetUserClosedGroups").then(v => v.json()).then((v) => {
+			v.forEach(i => {
+				closedroomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}'>${i.name}</a>`);
 			});
 		});
 	}

@@ -32,9 +32,9 @@ namespace ChatApp.Controllers
 			return RedirectToAction("Index");
 		}
 
-		public IActionResult RemoveGroup(string groupToken)
+		public IActionResult CloseGroup(string groupToken)
 		{
-			Pool.dbm.RemoveGroup(UserId, groupToken);
+			Pool.dbm.CloseGroup(UserId, groupToken);
 			return RedirectToAction("Index");
 		}
 	}

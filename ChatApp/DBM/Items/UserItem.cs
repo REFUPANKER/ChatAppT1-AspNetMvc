@@ -20,5 +20,9 @@ namespace ChatApp.DBM.Items
 
 		[AllowNull]
 		public string password { get; set; }
+
+		[AllowNull]
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		public int active { get; set; }
 	}
 }

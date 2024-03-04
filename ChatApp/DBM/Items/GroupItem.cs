@@ -16,5 +16,9 @@ namespace ChatApp.DBM.Items
 		public string? name { get; set; }
 
         public int global { get; set; }
-    }
+
+		[AllowNull]
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		public int active { get; set; }
+	}
 }

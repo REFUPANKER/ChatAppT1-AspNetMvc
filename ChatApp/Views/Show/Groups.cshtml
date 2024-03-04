@@ -9,8 +9,9 @@ its groups
 <div id="groupsHolder">
 </div>
 <script>
+	var limit = 3;
 	var start = 0;
-	var end = 0;
+	var end = limit;
 	const groupsHolder = document.getElementById("groupsHolder");
 	function fetchGroups(toNext) {
 		if (toNext) {
@@ -29,6 +30,9 @@ its groups
 				}
 			});
 		} else {
+			if (end === 0) {
+				end = limit;
+			}
 			fetch(`/Api/GetPreGroupsByLimit?end=${end}`).then(v => (v.json())).then((v) => {
 				if (v.length > 0) {
 					groupsHolder.innerHTML = "";
@@ -40,11 +44,14 @@ its groups
 						}
 						groupsHolder.innerHTML += JSON.stringify(e) + "</br>";
 					})
-					end = lastid;
+					end = lastid - lim;
 					console.log(end);
 				}
 			});
-		}
 
+		}
+		console.log(start);
+		console.log(end);
+		console.log("-----------");
 	}
 </script>

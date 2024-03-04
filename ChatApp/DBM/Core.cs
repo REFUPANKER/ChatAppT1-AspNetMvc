@@ -26,7 +26,19 @@ namespace ChatApp.DBM
 			{
 				var res = (from g in Groups
 						   join gou in GroupsOfUser on g.id equals gou.groupId
-						   where gou.userId == Convert.ToInt32(userid)
+						   where gou.userId == Convert.ToInt32(userid) && g.active == 1
+						   select g).Distinct();
+				return res.ToList();
+			}
+			return null;
+		}
+		public List<GroupItem>? GetClosedGroupsOfUser(string? userid)
+		{
+			if (GroupsOfUser != null)
+			{
+				var res = (from g in Groups
+						   join gou in GroupsOfUser on g.id equals gou.groupId
+						   where gou.userId == Convert.ToInt32(userid) && g.active == 0
 						   select g).Distinct();
 				return res.ToList();
 			}
@@ -87,14 +99,14 @@ namespace ChatApp.DBM
 			}
 		}
 
-		public void RemoveGroup(int userid, string groupToken)
+		public void CloseGroup(int userid, string groupToken)
 		{
 			if (Groups != null)
 			{
 				GroupItem? group = Groups?.Where(x => x.token == groupToken).FirstOrDefault();
 				if (group != null && group.owner == userid)
 				{
-					Groups?.Remove(group);
+					group.active = 0;
 					SaveChanges();
 				}
 			}

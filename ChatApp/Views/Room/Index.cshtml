@@ -27,7 +27,7 @@
 		<a class="btn btn-outline-danger p-2 fs-4" href="/Groups/LeaveGroup?groupToken=@Model.token">Gruptan ayrıl</a>
 		@if (Model.global == 1 || userid() == owner?.id + "")
 		{
-			<a class="btn btn-outline-danger p-2 fs-4" href="/Groups/RemoveGroup?groupToken=@Model.token">Grubu sil</a>
+			<a class="btn btn-outline-danger p-2 fs-4" href="/Groups/CloseGroup?groupToken=@Model.token">Grubu kapat</a>
 		}
 	</div>
 </div>
