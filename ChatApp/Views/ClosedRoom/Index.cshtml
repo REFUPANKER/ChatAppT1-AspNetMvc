@@ -1,0 +1,15 @@
+﻿@model string
+@{
+	Layout = "_GroupChat";
+}
+
+<div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center fs-2">
+	<h1>closed room</h1>
+	<label>
+	@Model
+	</label>
+	<h4 class="text-decoration-underline">show the button below if the group owner is current user</h4>
+	<a href="/Api/OpenGroup?groupToken=@Model" class="btn btn-outline-success">
+		Re activate it
+	</a>
+</div>

@@ -12,29 +12,37 @@
 </head>
 <body class="GoupChat">
 	<div class="d-flex h-100 bg-secondary">
-		<div class="w-25 d-flex flex-column fs-4">
+		<div class="w-25 d-flex flex-column fs-4 overflow-auto">
 			<a asp-controller="Auth" asp-action="Logout" class="w-100 text-center text-decoration-none">Çıkış yap</a>
 			<a asp-controller="Groups" asp-action="Index" class="w-100 ps-2 text-decoration-none">Home</a>
-			<div id="RoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(15,15,15);max-height:25vh;">
+			<div id="RoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto h-100" style="background-color:rgb(15,15,15);max-height:8vmax;">
 				<h6 class="text-center w-100 m-0">Dahil olduğun gruplar</h6>
+				<div class="GroupsListLoadingIcon"></div>
 			</div>
-			<div id="ClosedRoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(60,15,15);max-height:25vh;">
+			<div id="ClosedRoomsList" class="m-3 p-1 rounded-3 d-flex flex-column overflow-auto" style="background-color:rgb(60,15,15);max-height:8vmax;">
 				<h6 class="text-center w-100 m-0">Dahil olduğun kapalı gruplar</h6>
+				<div class="GroupsListLoadingIcon"></div>
 			</div>
-			<form asp-controller="Groups" asp-action="AddHub" class="d-flex flex-column align-items-center">
+			<form asp-controller="Api" asp-action="AddGroup" class="d-flex flex-column align-items-center overflow-auto">
 				<label>Yeni grup ekle</label>
-				<input name="hubName" type="text" />
+				<input name="name" type="text" />
 				<div>
 					<label>Grup herkese açık mı?</label>
-					<input name="global" type="checkbox" checked="checked" style="height:2vmax;width:2vmax;" />
+					<input name="global" type="checkbox" style="height:2vmax;width:2vmax;" />
 				</div>
 				<button type="submit">Ekle</button>
 			</form>
-			<form asp-controller="Groups" asp-action="JoinGroup" class="d-flex flex-column align-items-center">
+			<form asp-controller="Api" asp-action="JoinGroup" class="d-flex flex-column align-items-center overflow-auto">
 				<label>Gruba katıl</label>
 				<input name="groupToken" type="text" placeholder="Group Token" />
 				<button type="submit">Katıl</button>
 				<a class="btn btn-success p-2 m-2 fs-3" href="/Show/Groups">Grupları Keşfet</a>
+				<p class="fs-6 m-1 p-2 rounded-3 text-center overflow-auto bg-dark" style="max-height:5vmax;">
+					Gruplara katilma sistemi hakkinda
+					grup tokenleri linkte gorunur bicimdedir,
+					ozel gruplara katilirken InviteTokens tablosundan yararlanilmalidir.
+					expiration date gibi sistemlerle sinirli tarihli davet linkleri olusturulabilmelidir.
+				</p>
 			</form>
 		</div>
 		<div class="w-75 bg-dark overflow-auto">
@@ -49,13 +57,21 @@
 		var closedroomslist = document.getElementById("ClosedRoomsList");
 		fetch("/Api/GetUserGroups").then(v => v.json()).then((v) => {
 			v.forEach(i=>{
-				roomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}'>${i.name}</a>`);
+				roomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}' style="color:${i.global===1?"green":"orangered"}">${i.name}</a>`);
 			});
+			roomslist.innerHTML= roomslist.innerHTML.replace('<div class="GroupsListLoadingIcon"></div>','');
+			if(v.length<=0){
+				roomslist.innerHTML+="No groups available";
+			}
 		});
 		fetch("/Api/GetUserClosedGroups").then(v => v.json()).then((v) => {
 			v.forEach(i => {
-				closedroomslist.insertAdjacentHTML("beforeend", `<a href='/Room?token=${i.token}'>${i.name}</a>`);
+				closedroomslist.insertAdjacentHTML("beforeend", `<a href='/ClosedRoom?token=${i.token}' style="color:${i.global===1?"green":"orangered"}">${i.name}</a>`);
 			});
+			closedroomslist.innerHTML= closedroomslist.innerHTML.replace('<div class="GroupsListLoadingIcon"></div>','');
+			if(v.length<=0){
+				closedroomslist.innerHTML+="No groups available";
+			}
 		});
 	}
 	LoadRoomsList();

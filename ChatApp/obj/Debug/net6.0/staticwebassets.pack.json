@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\images\\loading.gif",
+      "PackagePath": "staticwebassets\\images\\loading.gif"
+    },
+    {
       "Id": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

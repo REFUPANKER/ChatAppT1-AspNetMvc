@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ChatApp.DBM.Items
 {
@@ -7,8 +8,10 @@ namespace ChatApp.DBM.Items
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
 
+        [NotNull]
         public int groupId { get; set; }
 
-        public int userId { get; set; }
+		[NotNull]
+		public int userId { get; set; }
     }
 }

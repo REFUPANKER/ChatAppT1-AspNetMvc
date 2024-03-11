@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XhSrUQPFxuFWozFADGqXaK/CeeVcm1FnEajNHzJTPfA=",
+  "Hash": "6BNbkMgzkBinGuEZY1ZJWLhNa3a2v1kH2S4ccXTh7Ok=",
   "Source": "ChatApp",
   "BasePath": "_content/ChatApp",
   "Mode": "Default",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\images\\loading.gif",
+      "SourceId": "ChatApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\",
+      "BasePath": "_content/ChatApp",
+      "RelativePath": "images/loading.gif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\loading.gif"
     },
     {
       "Identity": "C:\\Users\\Computer\\Documents\\Education\\GraduationProject\\ChatApp\\ChatApp\\wwwroot\\js\\site.js",

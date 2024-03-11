@@ -11,47 +11,29 @@ its groups
 <script>
 	var limit = 3;
 	var start = 0;
-	var end = limit;
+	var end = 0;
 	const groupsHolder = document.getElementById("groupsHolder");
 	function fetchGroups(toNext) {
 		if (toNext) {
-			fetch(`/Api/GetNextGroupsByLimit?start=${start}`).then(v => (v.json())).then((v) => {
+			fetch(`/Api/GetNextGroupsByLimit?start=${end}`).then(v => (v.json())).then((v) => {
 				if (v.length > 0) {
-					groupsHolder.innerHTML = "";
-					let lastid = v[0]["id"];
-					end = lastid;
-					v.forEach(e => {
-						if (e.id > lastid) {
-							lastid = e.id;
-						}
-						groupsHolder.innerHTML += JSON.stringify(e) + "</br>";
-					})
-					start = lastid;
+					CreateGroupListItems(v);
 				}
 			});
 		} else {
-			if (end === 0) {
-				end = limit;
-			}
-			fetch(`/Api/GetPreGroupsByLimit?end=${end}`).then(v => (v.json())).then((v) => {
+			fetch(`/Api/GetPreGroupsByLimit?end=${start}`).then(v => (v.json())).then((v) => {
 				if (v.length > 0) {
-					groupsHolder.innerHTML = "";
-					let lastid = v[v.length - 1]["id"];
-					start = lastid;
-					v.forEach(e => {
-						if (e.id < lastid) {
-							lastid = e.id;
-						}
-						groupsHolder.innerHTML += JSON.stringify(e) + "</br>";
-					})
-					end = lastid - lim;
-					console.log(end);
+					CreateGroupListItems(v);
 				}
 			});
-
 		}
-		console.log(start);
-		console.log(end);
-		console.log("-----------");
+	}
+	function CreateGroupListItems(v) {
+		groupsHolder.innerHTML = "";
+		v.forEach(e => {
+			groupsHolder.innerHTML += JSON.stringify(e) + "</br>";
+		})
+		start = v[0]["id"];
+		end = v[v.length - 1]["id"];
 	}
 </script>

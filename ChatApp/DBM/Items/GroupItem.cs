@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ChatApp.DBM.Items
@@ -14,11 +15,12 @@ namespace ChatApp.DBM.Items
 		public int owner { get; set; }
 
 		public string? name { get; set; }
-
-        public int global { get; set; }
-
-		[AllowNull]
-		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		
+		[NotNull]
+		public int global { get; set; }
+		
+		[NotNull]
+		[DefaultValue(1)]
 		public int active { get; set; }
 	}
 }
